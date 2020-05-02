@@ -94,7 +94,7 @@
                 {% for p in latest_products %}
                     <div class="product-item">
                         <div class="pi-pic">
-                            {% cloudinary p.image.url height=500 width=500 crop="scale" gravity="faces" alt=p.titulo %}
+                            {% cloudinary p.image.url height=350 width=300 crop="scale" gravity="faces" alt=p.titulo %}
                             <div class="pi-links">
                                 <a href="#" class="add-card"><i
                                         class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
@@ -137,7 +137,7 @@
                                 {% if p.estoque %}
                                     <div class="tag-sale">ESTOQUE</div>
                                 {% endif %}
-                                {% cloudinary p.image.url height=500 width=500 crop="scale" gravity="faces" alt=p.titulo %}
+                                {% cloudinary p.image.url height=350 width=300 crop="scale" gravity="faces" alt=p.titulo %}
                                 <div class="pi-links">
                                     <a href="#" class="add-card"><i
                                             class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
