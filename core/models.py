@@ -9,8 +9,9 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.db.models import QuerySet, ProtectedError, Q
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models.signals import m2m_changed
 from django.utils.translation import ugettext as _
+from cloudinary.models import CloudinaryField
 
 from core import validators, signals
 from core.choices import GENDER_CHOICES, STATE_CHOICES, RATING_CHOICES, QUANTITY_CHOICES
@@ -146,7 +147,7 @@ class PerfilUsuario(BaseModel):
     numero = models.CharField(_(u'Número'), max_length=10, blank=True, null=True)
     bairro = models.CharField(_(u'Bairro'), max_length=120, blank=True, null=True)
     complemento = models.CharField(_(u'Complemento'), max_length=255, blank=True, null=True)
-    avatar = models.ImageField(_(u'Avatar'), upload_to='profiles', null=True, blank=True)
+    avatar = CloudinaryField(_(u'Avatar'), null=True, blank=True)
     lista = models.ManyToManyField('core.Produto', blank=True, verbose_name=_(u'Carrinho de Compras'), related_name='carrinho')
     favoritos = models.ManyToManyField('core.Produto', blank=True, verbose_name=_(u'Meus Favoritos'), related_name='favoritos')
 
@@ -215,23 +216,14 @@ class Produto(BaseModel):
     estoque = models.BooleanField(_('Em estoque?'), null=True, blank=True)
     slug = models.CharField(_('Slug'), max_length=20, null=True)
     peso = models.PositiveIntegerField(_('Peso do produto'), null=True)
-    image = models.ImageField(_('Imagem'), upload_to='produtos', validators=[validators.validate_file, validators.file_size])
-    image_500x500 = models.ImageField(_('Imagem 500x500'), upload_to='produtos', editable=False, null=True, blank=True)
+    image = CloudinaryField(_('Imagem'))
 
     def clean(self):
-        if self.promocao > self.preco:
-            raise ValidationError(_('O preço promocional não pode ser maior que o preço inicial.'))
+        if self.promocao:
+            if self.promocao > self.preco:
+                raise ValidationError(_('O preço promocional não pode ser maior que o preço inicial.'))
 
     def save(self, *args, **kwargs):
-        # image_500x500
-        if self.image:
-            img = Image.open(self.image)
-            output = BytesIO()
-            img = img.resize((500, 500))
-            img.save(output, format='JPEG', quality=300)
-            output.seek(0)
-            self.image_500x500 = InMemoryUploadedFile(output, 'image_500x500', "%s.jpg" % self.image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
-
         if self.promocao:
             tmp = self.preco - self.promocao
             self.desconto = (tmp / self.preco) * 100
@@ -248,19 +240,9 @@ class ProdutoImagem(BaseModel):
         verbose_name_plural = _('Imagens')
 
     produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
-    image = models.ImageField(_('Imagem'), upload_to='produtos', validators=[validators.validate_file, validators.file_size])
-    image_1000x1358 = models.ImageField(_('Imagem 1000x1358'), upload_to='produtos', editable=False, null=True, blank=True)
+    image = CloudinaryField(_('Imagem'), blank=True)
 
     def save(self, *args, **kwargs):
-        # image_1000x1358
-        if self.image:
-            img = Image.open(self.image)
-            output = BytesIO()
-            img = img.resize((1000, 1358))
-            img.save(output, format='JPEG', quality=300)
-            output.seek(0)
-            self.image_1000x1358 = InMemoryUploadedFile(output, 'image_1000x1358', "%s.jpg" % self.image.name.split('.')[0], 'image/jpeg', sys.getsizeof(output), None)
-
         super(ProdutoImagem, self).save(*args, **kwargs)
 
     def __str__(self):

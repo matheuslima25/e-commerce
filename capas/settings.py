@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from decouple import config
 from dj_database_url import parse as dburl
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -53,6 +56,8 @@ INSTALLED_APPS = [
     'six',
     #Pagseguro
     'pagseguro',
+    #Cloudnary
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -181,3 +186,9 @@ PAGSEGURO_EMAIL = config('PAGSEGURO_EMAIL')
 PAGSEGURO_TOKEN = config('PAGSEGURO_TOKEN')
 PAGSEGURO_SANDBOX = config('PAGSEGURO_SANDBOX', default=True, cast=bool)  # se o valor for True, as requisições a api serão feitas usando o PagSeguro Sandbox.
 PAGSEGURO_LOG_IN_MODEL = True  # se o valor for True, os checkouts e transações vão ser logadas no database.
+
+cloudinary.config(
+    cloud_name=config('CLOUDINARY_NAME'),
+    api_key=config('CLOUDINARY_KEY'),
+    api_secret=config('CLOUDINARY_SECRET')
+)
