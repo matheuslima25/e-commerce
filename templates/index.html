@@ -1,0 +1,178 @@
+{% extends 'base.html' %}{% load static %}
+{% block main %}
+    <!-- Hero section -->
+    <section class="hero-section">
+        <div class="hero-slider owl-carousel">
+            <div class="hs-item set-bg" data-setbg="{% static 'img/bg.jpg' %}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-7 text-white">
+                            <span>Tudo em</span>
+                            <h2>capas</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus
+                                commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                            <a href="#" class="site-btn sb-line">CATEGORIAS</a>
+                            <a href="#" class="site-btn sb-white">PROMOÇÕES</a>
+                        </div>
+                    </div>
+                    <div class="offer-card text-white">
+                        <span>a partir de</span>
+                        <h2>R$9,00</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="hs-item set-bg" data-setbg="{% static 'img/bg-2.jpeg' %}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-7 text-white">
+                            <span>vários</span>
+                            <h2>acessórios</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                                ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus
+                                commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                            <a href="#" class="site-btn sb-line">CATEGORIAS</a>
+                            <a href="#" class="site-btn sb-white">PROMOÇÕES</a>
+                        </div>
+                    </div>
+                    <div class="offer-card text-white">
+                        <span>a partir de</span>
+                        <h2>R$29,00</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="slide-num-holder" id="snh-1"></div>
+        </div>
+    </section>
+    <!-- Hero section end -->
+
+
+
+    <!-- Features section -->
+    <section class="features-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4 p-0 feature">
+                    <div class="feature-inner">
+                        <div class="feature-icon">
+                            <img src="{% static 'img/icons/1.png' %}" alt="#">
+                        </div>
+                        <h2>Várias formas de pagamento</h2>
+                    </div>
+                </div>
+                <div class="col-md-4 p-0 feature">
+                    <div class="feature-inner">
+                        <div class="feature-icon">
+                            <img src="{% static 'img/icons/2.png' %}" alt="#">
+                        </div>
+                        <h2>Produtos de qualidade</h2>
+                    </div>
+                </div>
+                <div class="col-md-4 p-0 feature">
+                    <div class="feature-inner">
+                        <div class="feature-icon">
+                            <img src="{% static 'img/icons/3.png' %}" alt="#">
+                        </div>
+                        <h2>Entrega rápida</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Features section end -->
+
+
+    <!-- latest product section -->
+    <section class="top-letest-product-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>NOVIDADES</h2>
+            </div>
+            <div class="product-slider owl-carousel">
+                {% for p in latest_products %}
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="{{ p.image_500x500.url }}" alt="">
+                            <div class="pi-links">
+                                <a href="#" class="add-card"><i
+                                        class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
+                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="pi-text">
+                            {% if p.promocao %}
+                                <h6>R${{ p.promocao }}</h6>
+                            {% else %}
+                                <h6>R${{ p.preco }}</h6>
+                            {% endif %}
+                            <p>{{ p.titulo }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- latest product section end -->
+
+
+
+    <!-- Product filter section -->
+    <section class="product-filter-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>MAIS VENDIDOS</h2>
+            </div>
+            <ul class="product-filter-menu">
+                {% for c in categorias_p %}
+                    <li><a href="#">{{ c.titulo }}</a></li>
+                {% endfor %}
+            </ul>
+            <div class="row">
+                {% for p in produtos %}
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                {% if p.estoque %}
+                                    <div class="tag-sale">ESTOQUE</div>
+                                {% endif %}
+                                <img src="{{ p.image_500x500.url }}" alt="">
+                                <div class="pi-links">
+                                    <a href="#" class="add-card"><i
+                                            class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
+                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                                </div>
+                            </div>
+                            <div class="pi-text">
+                                {% if p.promocao %}
+                                    <h6>R${{ p.promocao }}</h6>
+                                {% else %}
+                                    <h6>R${{ p.preco }}</h6>
+                                {% endif %}
+                                <p>{{ p.titulo }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        <div class="text-center pt-5">
+            <button class="site-btn sb-line sb-dark">CARREGAR MAIS</button>
+        </div>
+    </section>
+    <!-- Product filter section end -->
+
+
+    <!-- Banner section -->
+    <section class="banner-section">
+        <div class="container">
+            <div class="banner set-bg" data-setbg="{% static 'img/banner-bg.jpeg' %}">
+                <div class="tag-new">NOVO</div>
+                <span>várias</span>
+                <h2>Capas</h2>
+                <a href="#" class="site-btn">COMPRE JÁ</a>
+            </div>
+        </div>
+    </section>
+    <!-- Banner section end  -->
+{% endblock %}

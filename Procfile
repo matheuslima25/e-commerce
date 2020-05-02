@@ -1,0 +1,1 @@
+web: gunicorn capas.wsgi --log-file -
