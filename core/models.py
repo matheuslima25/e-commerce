@@ -1,19 +1,16 @@
-import sys
 import uuid
-from io import BytesIO
 from random import random
 
-from PIL import Image
+from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import Group, AbstractUser
 from django.core.exceptions import ValidationError
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import models
 from django.db.models import QuerySet, ProtectedError, Q
 from django.db.models.signals import m2m_changed
+from django.utils.text import slugify
 from django.utils.translation import ugettext as _
-from cloudinary.models import CloudinaryField
 
-from core import validators, signals
+from core import signals
 from core.choices import GENDER_CHOICES, STATE_CHOICES, RATING_CHOICES, QUANTITY_CHOICES
 
 
@@ -148,8 +145,10 @@ class PerfilUsuario(BaseModel):
     bairro = models.CharField(_(u'Bairro'), max_length=120, blank=True, null=True)
     complemento = models.CharField(_(u'Complemento'), max_length=255, blank=True, null=True)
     avatar = CloudinaryField(_(u'Avatar'), null=True, blank=True)
-    lista = models.ManyToManyField('core.Produto', blank=True, verbose_name=_(u'Carrinho de Compras'), related_name='carrinho')
-    favoritos = models.ManyToManyField('core.Produto', blank=True, verbose_name=_(u'Meus Favoritos'), related_name='favoritos')
+    lista = models.ManyToManyField('core.Produto', blank=True, verbose_name=_(u'Carrinho de Compras'),
+                                   related_name='carrinho')
+    favoritos = models.ManyToManyField('core.Produto', blank=True, verbose_name=_(u'Meus Favoritos'),
+                                       related_name='favoritos')
 
     def cleaned_phone(self):
         def _only_numbers(value):
@@ -188,10 +187,15 @@ class Categoria(BaseModel):
     titulo = models.CharField(_('Titulo'), max_length=150)
     subcategoria = models.ManyToManyField('core.Categoria', blank=True)
     is_sub = models.BooleanField(_('É subcategoria?'), default=False, editable=False)
+    slug = models.CharField(_('Slug'), max_length=20, null=True, blank=True, editable=False)
 
     def clean(self):
         if Categoria.objects.filter(Q(titulo=self.titulo) & ~Q(id=self.id)).exists():
-            raise ValidationError('Já existe uma categoria com este nome, por favor escolha outro')
+            raise ValidationError('Já existe uma categoria com este nome, por favor, escolha outro')
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.titulo)
+        super(Categoria, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.titulo
@@ -208,13 +212,15 @@ class Produto(BaseModel):
 
     titulo = models.CharField(_('Titulo'), max_length=150)
     preco = models.DecimalField(_('Preço'), max_digits=6, decimal_places=2)
-    avaliacao = models.CharField(_(u'Avaliação'), max_length=11, choices=RATING_CHOICES, blank=True, null=True, editable=False)
+    descricao = models.TextField(_('Descrição'), null=True)
+    avaliacao = models.CharField(_(u'Avaliação'), max_length=11, choices=RATING_CHOICES, blank=True, null=True,
+                                 editable=False)
     destaque = models.BooleanField(_('Destaque'), default=False)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     promocao = models.DecimalField(_('Preço Promocional'), max_digits=6, decimal_places=2, null=True, blank=True)
     desconto = models.DecimalField(_('Desconto'), max_digits=4, decimal_places=2, null=True, blank=True, editable=False)
     estoque = models.BooleanField(_('Em estoque?'), null=True, blank=True)
-    slug = models.CharField(_('Slug'), max_length=20, null=True)
+    slug = models.CharField(_('Slug'), max_length=20, null=True, blank=True, editable=False)
     peso = models.PositiveIntegerField(_('Peso do produto'), null=True)
     image = CloudinaryField(_('Imagem'))
 
@@ -228,6 +234,7 @@ class Produto(BaseModel):
             tmp = self.preco - self.promocao
             self.desconto = (tmp / self.preco) * 100
 
+        self.slug = slugify(self.titulo)
         super(Produto, self).save(*args, **kwargs)
 
     def __str__(self):

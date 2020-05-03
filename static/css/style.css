@@ -2422,3 +2422,41 @@ ol {
 		display: none;
 	}
 }
+
+/* Custom */
+
+.tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.username:hover .tooltiptext {
+  visibility: visible;
+}
+
+.product-big-img {
+	width: 750px; /* width of container */
+    height: 850px; /* height of container */
+    object-fit: cover;
+}
+
+.product-img {
+	width: 350px; /* width of container */
+    height: 500px; /* height of container */
+    object-fit: cover;
+}
+
+.related-product-img {
+	width: 250px; /* width of container */
+    height: 400px; /* height of container */
+    object-fit: cover;
+}

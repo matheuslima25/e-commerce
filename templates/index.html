@@ -1,4 +1,4 @@
-{% extends 'base.html' %}{% load static %}{% load cloudinary %}
+{% extends 'base.html' %}{% load static %}
 {% block main %}
     <!-- Hero section -->
     <section class="hero-section">
@@ -48,8 +48,6 @@
     </section>
     <!-- Hero section end -->
 
-
-
     <!-- Features section -->
     <section class="features-section">
         <div class="container-fluid">
@@ -83,7 +81,6 @@
     </section>
     <!-- Features section end -->
 
-
     <!-- latest product section -->
     <section class="top-letest-product-section">
         <div class="container">
@@ -94,7 +91,7 @@
                 {% for p in latest_products %}
                     <div class="product-item">
                         <div class="pi-pic">
-                            {% cloudinary p.image.url height=350 width=300 crop="scale" gravity="faces" alt=p.titulo %}
+                            <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><img class="product-img" src="{{ p.image.url }}" alt="{{ p.slug }}-{{ forloop.counter0 }}"></a>
                             <div class="pi-links">
                                 <a href="#" class="add-card"><i
                                         class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
@@ -107,7 +104,7 @@
                             {% else %}
                                 <h6>R${{ p.preco }}</h6>
                             {% endif %}
-                            <p>{{ p.titulo }}</p>
+                            <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><p>{{ p.titulo }}</p></a>
                         </div>
                     </div>
                 {% endfor %}
@@ -115,8 +112,6 @@
         </div>
     </section>
     <!-- latest product section end -->
-
-
 
     <!-- Product filter section -->
     <section class="product-filter-section">
@@ -137,7 +132,7 @@
                                 {% if p.estoque %}
                                     <div class="tag-sale">ESTOQUE</div>
                                 {% endif %}
-                                {% cloudinary p.image.url height=350 width=300 crop="scale" gravity="faces" alt=p.titulo %}
+                                <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><img class="product-img" src="{{ p.image.url }}" alt="{{ p.slug }}-{{ forloop.counter0 }}"></a>
                                 <div class="pi-links">
                                     <a href="#" class="add-card"><i
                                             class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
@@ -150,7 +145,7 @@
                                 {% else %}
                                     <h6>R${{ p.preco }}</h6>
                                 {% endif %}
-                                <p>{{ p.titulo }}</p>
+                                <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><p>{{ p.titulo }}</p></a>
                             </div>
                         </div>
                     </div>
@@ -161,7 +156,6 @@
         </div>
     </section>
     <!-- Product filter section end -->
-
 
     <!-- Banner section -->
     <section class="banner-section">
@@ -175,4 +169,5 @@
         </div>
     </section>
     <!-- Banner section end  -->
+
 {% endblock %}

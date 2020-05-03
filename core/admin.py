@@ -75,10 +75,11 @@ class ProdutoAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {'fields': ('titulo', 'preco', 'destaque', 'categoria', 'estoque', 'image')}),
-        ('Promocao', {'fields': ('promocao',)}),
+        ('Promoção', {'fields': ('promocao',)}),
+        ('Descrição', {'fields': ('descricao',)}),
     )
 
-    readonly_fields = ('avaliacao', )
+    readonly_fields = ('avaliacao', 'slug')
 
 
 # Custom admin name

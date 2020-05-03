@@ -1,0 +1,38 @@
+.form-elegant .font-small {
+    font-size: 0.8rem;
+}
+
+.form-elegant .z-depth-1a {
+    -webkit-box-shadow: 0 2px 5px 0 rgba(255, 64, 74, 0.26), 0 4px 12px 0 rgba(209, 54, 62, 0.25);
+    box-shadow: 0 2px 5px 0 rgba(255, 64, 74, 0.26), 0 4px 12px 0 rgba(209, 54, 62, 0.25);
+}
+
+.form-elegant .z-depth-1-half,
+.form-elegant .btn:hover {
+    -webkit-box-shadow: 0 5px 11px 0 rgba(255, 64, 74, 0.28), 0 4px 15px 0 rgba(209, 54, 62, 0.15);
+    box-shadow: 0 5px 11px 0 rgba(255, 64, 74, 0.28), 0 4px 15px 0 rgba(209, 54, 62, 0.15);
+}
+
+.form-elegant .modal-header {
+    border-bottom: none;
+}
+
+.modal-dialog .form-elegant .btn {
+    color: white;
+    background-color: #CD262F;
+    min-width: calc(70% - 185px);
+    text-align: center;
+}
+
+.red-text {
+    color: #CD262F;
+}
+
+.modal-dialog .form-elegant .btn .fa {
+    color: white !important;
+}
+
+.form-elegant .modal-body, .form-elegant .modal-footer {
+    font-weight: 400;
+}
+
