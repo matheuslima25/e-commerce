@@ -18,6 +18,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='produto',
             name='estoque',
-            field=models.PositiveIntegerField(default=1, verbose_name='Estoque'),
+            field=models.PositiveIntegerField(default=1, null=True, verbose_name='Estoque'),
         ),
     ]
