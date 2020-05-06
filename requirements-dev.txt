@@ -1,4 +1,5 @@
 asgiref==3.2.7
+boto==2.49.0
 cachetools==4.1.0
 certifi==2020.4.5.1
 cffi==1.14.0
@@ -13,6 +14,8 @@ dj-static==0.0.6
 Django==3.0.5
 django-3-jet==1.0.8
 django-cors-headers==3.2.1
+django-pagseguro2==3.0.0
+django-storages==1.9.1
 djangorestframework==3.11.0
 djangorestframework-jwt==1.11.0
 google-api-core==1.17.0
@@ -37,6 +40,7 @@ pyasn1-modules==0.2.8
 pycparser==2.20
 PyJWT==1.7.1
 pyparsing==2.4.7
+python-dateutil==2.8.1
 python-decouple==3.3
 python3-openid==3.1.0
 pytz==2019.3
@@ -53,3 +57,4 @@ static3==0.7.0
 uritemplate==3.0.1
 urllib3==1.25.9
 whitenoise==5.0.1
+xmltodict==0.12.0
