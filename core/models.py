@@ -11,7 +11,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 
 from core import signals
-from core.choices import GENDER_CHOICES, STATE_CHOICES, RATING_CHOICES, QUANTITY_CHOICES
+from core.choices import GENDER_CHOICES, STATE_CHOICES, RATING_CHOICES, QUANTITY_CHOICES, COLOR_CHOICES
 
 
 class BaseModelQuerySet(QuerySet):
@@ -219,7 +219,8 @@ class Produto(BaseModel):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     promocao = models.DecimalField(_('Preço Promocional'), max_digits=6, decimal_places=2, null=True, blank=True)
     desconto = models.DecimalField(_('Desconto'), max_digits=4, decimal_places=2, null=True, blank=True, editable=False)
-    estoque = models.BooleanField(_('Em estoque?'), null=True, blank=True)
+    estoque = models.PositiveIntegerField(_('Estoque'), default=1)
+    cor = models.CharField(_('Cor'), max_length=21, choices=COLOR_CHOICES, default='#ffffff')
     slug = models.CharField(_('Slug'), max_length=20, null=True, blank=True, editable=False)
     peso = models.PositiveIntegerField(_('Peso do produto'), null=True)
     image = CloudinaryField(_('Imagem'))

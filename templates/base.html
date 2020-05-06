@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-xl-6 col-lg-5">
                     <form class="header-search-form">
-                        <input type="text" placeholder="Procurar...">
+                        <input type="text" name="search" id="search" placeholder="Procurar...">
                         <button><i class="flaticon-search"></i></button>
                     </form>
                 </div>
@@ -64,9 +64,13 @@
                         <div class="up-item">
                             {% if not request.user.is_authenticated %}
                                 <i class="flaticon-profile"></i>
-                                <a href="#" data-toggle="modal" data-target="#loginModalForm">Entre</a> ou <a href="#">Crie uma conta</a>
+                                <a id="login-btn" href="{% url 'login' %}" data-toggle="modal" data-target="#LoginModal">Entre</a> ou <a href="{% url 'register' %}" id="register-btn">Crie uma conta</a>
                             {% else %}
-                                <i class="flaticon-profile"></i><span class="username"> Bem-vindo(a) <a href="#">{{ request.user }}</a><span class="tooltiptext">Acessar perfil</span></span>
+                                {% if request.user.first_name %}
+                                    <i class="flaticon-profile"></i><span class="username"> Bem-vindo(a) <a href="#">{{ request.user.first_name }}</a><span class="tooltiptext">Acessar perfil</span></span>
+                                {% else %}
+                                    <i class="flaticon-profile"></i><span class="username"> Bem-vindo(a) <a href="#">{{ request.user }}</a><span class="tooltiptext">Acessar perfil</span></span>
+                                {% endif %}
                             {% endif %}
                         </div>
                         <div class="up-item">
@@ -75,6 +79,13 @@
                                 <span>0</span>
                             </div>
                             <a href="#">Carrinho</a>
+                        </div>
+                        <div class="up-item">
+                            {% if request.user.is_authenticated %}
+                                <div class="logout-up">
+                                    <i class="flaticon-logout"></i><a href="{% url 'logout' %}"> Sair</a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -111,6 +122,12 @@
 
 {% block main %}
 {% endblock %}
+
+<div id="login-div"></div>
+<div id="registration-div"></div>
+<div id="forget-password-div"></div>
+<div id="password-change-div"></div>
+<div id="password-change-confirm-div"></div>
 
 <!-- Footer section -->
 <section class="footer-section">
@@ -212,57 +229,6 @@
 </section>
 <!-- Footer section end -->
 
-<!-- Login modal -->
-<div class="modal fade" id="loginModalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <!--Content-->
-    <div class="modal-content form-elegant">
-      <!--Header-->
-      <div class="modal-header text-center">
-        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalLabel"><strong>Entrar</strong></h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!--Body-->
-      <div class="modal-body mx-4">
-        <!--Body-->
-        <div class="md-form mb-5">
-          <input type="email" id="Form-email1" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="Form-email1">E-mail</label>
-        </div>
-
-        <div class="md-form pb-3">
-          <input type="password" id="Form-pass1" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="Form-pass1">Senha</label>
-          <p class="font-small blue-text d-flex justify-content-end">Forgot <a href="#" class="red-text ml-1"> Password?</a></p>
-        </div>
-
-        <div class="text-center mb-3">
-          <button type="button" class="btn blue-gradient btn-block btn-rounded z-depth-1a">Entrar</button>
-        </div>
-        <p class="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2"> ou entra com:</p>
-
-        <div class="row my-3 d-flex justify-content-center">
-          <!--Facebook-->
-          <a type="button" href="#" class="btn btn-white btn-rounded mr-md-3 mr-2 z-depth-1a"><i class="fa fa-facebook text-center"></i></a>
-          <!--Twitter-->
-          <a type="button" href="#" class="btn btn-white btn-rounded mr-md-3 mr-2 z-depth-1a"><i class="fa fa-twitter"></i></a>
-          <!--Google +-->
-          <a type="button" href="#" class="btn btn-white btn-rounded z-depth-1a"><i class="fa fa-google-plus"></i></a>
-        </div>
-      </div>
-      <!--Footer-->
-      <div class="modal-footer mx-5 pt-3 mb-1">
-        <p class="font-small grey-text d-flex justify-content-end">Ainda não tem uma conta? <a href="#" class="red-text ml-1"> Crie uma agora</a></p>
-      </div>
-    </div>
-    <!--/.Content-->
-  </div>
-</div>
-<!-- Login modal -->
-
 
 <!--====== Javascripts & Jquery ======-->
 <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
@@ -273,6 +239,7 @@
 <script src="{% static 'js/jquery.zoom.min.js' %}"></script>
 <script src="{% static 'js/jquery-ui.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/registration.js' %}"></script>
 {% block js %}
 {% endblock %}
 

@@ -1,0 +1,57 @@
+<!-- Login modal -->
+<div class="modal fade" id="RegisterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!--Content-->
+    <div class="modal-content form-elegant">
+      <!--Header-->
+      <div class="modal-header text-center">
+        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalTitle"><strong>Registrar</strong></h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body mx-4">
+        <!--Body-->
+
+        <form class="ajax" id="register-form" action="{% url 'register' %}" method="POST">{% csrf_token %}
+            <div id="registration-errors" class="form-errors"></div>
+
+            <div class="md-form pb-3">
+              <input type="text" id="name" name="name" required class="form-control validate" {% if form.name.value %}value="{{ form.name.value }}"{% endif %}>
+              <label data-error="wrong" data-success="right" for="name">Nome</label>
+            </div>
+
+            <div class="md-form pb-3">
+              <input type="email" id="email" name="email" required class="form-control validate" {% if form.email.value %}value="{{ form.email.value }}"{% endif %}>
+              <label data-error="wrong" data-success="right" for="email">E-mail</label>
+            </div>
+
+            <div class="md-form pb-3">
+              <input type="text" id="username" name="username" required class="form-control validate" {% if form.username.value %}value="{{ form.username.value }}"{% endif %}>
+              <label data-error="wrong" data-success="right" for="username">Nome de usuário</label>
+            </div>
+
+            <div class="md-form pb-3">
+              <input type="password" id="password1" name="password1" required class="form-control validate" {% if form.password1.value %}value="{{ form.password1.value }}"{% endif %}>
+              <label data-error="wrong" data-success="right" for="password1">Senha</label>
+            </div>
+
+            <div class="md-form pb-3">
+              <input type="password" id="password2" name="password2" required class="form-control validate" {% if form.password2.value %}value="{{ form.password2.value }}"{% endif %}>
+              <label data-error="wrong" data-success="right" for="password2">Repita a senha</label>
+            </div>
+
+            <div class="text-center mb-3">
+              <button type="submit" class="btn blue-gradient btn-block btn-rounded z-depth-1a">Registrar</button>
+            </div>
+
+        </form>
+
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!-- Login modal -->

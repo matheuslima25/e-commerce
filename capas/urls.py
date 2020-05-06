@@ -25,6 +25,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('api/oauth/', include('oauth.urls')),
     path('retorno/pagseguro/', include('pagseguro.urls')),
+    path('social-auth/', include('social_django.urls', namespace="social")),
 ]
 
 if settings.DEBUG:

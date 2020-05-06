@@ -2460,3 +2460,17 @@ ol {
     height: 400px; /* height of container */
     object-fit: cover;
 }
+
+.alert {
+	border-color: #CD262F;
+	background-color: transparent;
+	border-radius: 5px;
+	color: #CD262F;
+	box-shadow: 0 5px 6px 0 rgba(255, 64, 74, 0.28), 0 4px 15px 0 rgba(209, 54, 62, 0.15);
+}
+
+.alert > .close {
+	color: black;
+	margin-top: -10px;
+	margin-left: 10px;
+}

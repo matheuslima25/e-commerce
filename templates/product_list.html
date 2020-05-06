@@ -1,0 +1,31 @@
+{% for p in produtos %}
+    <div class="col-lg-3 col-sm-6">
+        <div class="product-item">
+            <div class="pi-pic">
+                {% if p.estoque %}
+                    <div class="tag-sale">ESTOQUE</div>
+                {% endif %}
+                <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><img class="product-img"
+                                                                              src="{{ p.image.url }}"
+                                                                              alt="{{ p.slug }}-{{ forloop.counter0 }}"></a>
+                <div class="pi-links">
+                    <a href="#" class="add-card"><i
+                            class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
+                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                </div>
+            </div>
+            <div class="pi-text">
+                {% if p.promocao %}
+                    <h6>R${{ p.promocao }}</h6>
+                {% else %}
+                    <h6>R${{ p.preco }}</h6>
+                {% endif %}
+                <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><p>{{ p.titulo }}</p></a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+{% if produtos.has_other_pages %}
+    <input type="hidden" id="pages" value="{{ paginator.num_pages }}"/>
+{% endif %}

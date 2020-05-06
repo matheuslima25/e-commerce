@@ -58,3 +58,17 @@ QUANTITY_CHOICES = [
     ('4', _(u'4')),
     ('5', _(u'5')),
 ]
+
+COLOR_CHOICES = [
+    ('#ffffff', _(u'Transparente / Branco')),
+    ('#e63c3c', _(u'Vermelho')),
+    ('#e6863c', _(u'Laranja')),
+    ('#e6e33c', _(u'Amarelo')),
+    ('#5ee63c', _(u'Verde')),
+    ('#3ca8e6', _(u'Azul')),
+    ('#993ce6', _(u'Roxo')),
+    ('#e63cc4', _(u'Rosa')),
+    ('#000000', _(u'Preto')),
+    ('#b5b5b5', _(u'Cinza')),
+    ('#5c4848', _(u'Marrom')),
+]

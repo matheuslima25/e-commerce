@@ -91,7 +91,9 @@
                 {% for p in latest_products %}
                     <div class="product-item">
                         <div class="pi-pic">
-                            <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><img class="product-img" src="{{ p.image.url }}" alt="{{ p.slug }}-{{ forloop.counter0 }}"></a>
+                            <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><img class="product-img"
+                                                                                          src="{{ p.image.url }}"
+                                                                                          alt="{{ p.slug }}-{{ forloop.counter0 }}"></a>
                             <div class="pi-links">
                                 <a href="#" class="add-card"><i
                                         class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
@@ -124,36 +126,12 @@
                     <li><a href="#">{{ c.titulo }}</a></li>
                 {% endfor %}
             </ul>
-            <div class="row">
-                {% for p in produtos %}
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                {% if p.estoque %}
-                                    <div class="tag-sale">ESTOQUE</div>
-                                {% endif %}
-                                <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><img class="product-img" src="{{ p.image.url }}" alt="{{ p.slug }}-{{ forloop.counter0 }}"></a>
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i
-                                            class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                {% if p.promocao %}
-                                    <h6>R${{ p.promocao }}</h6>
-                                {% else %}
-                                    <h6>R${{ p.preco }}</h6>
-                                {% endif %}
-                                <a href="{% url 'product_detail' slug=p.slug pk=p.id %}"><p>{{ p.titulo }}</p></a>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+
+            <div class="row" id="productlist" href="{% url 'load-products' %}"></div>
+
+            <div class="text-center pt-5">
+                <button class="site-btn sb-line sb-dark" id="loadMore">CARREGAR MAIS</button>
             </div>
-        <div class="text-center pt-5">
-            <button class="site-btn sb-line sb-dark">CARREGAR MAIS</button>
-        </div>
     </section>
     <!-- Product filter section end -->
 
@@ -170,4 +148,84 @@
     </section>
     <!-- Banner section end  -->
 
+{% endblock %}
+
+{% block js %}
+    <script>
+        jQuery(document).ready(function ($) {
+            $(function () {
+                $("#loadMore").on('click', function (e) {
+                    e.preventDefault();
+                    load_more_products();
+                    if (nomore) {
+                        $(this).hide();
+                    }
+                });
+            });
+
+            get_products();
+
+            let n_pages = 0;
+
+            function get_products() {
+                let div = $('#productlist');
+                $.ajax({
+                    type: "GET",
+                    url: div.attr('href'),
+                    success: function (data) {
+                        div.append(data);
+                        n_pages = $('#pages').val();
+                        if (!n_pages) {
+                            $("#loadMore").hide();
+                        }
+                    },
+                    error: function () {
+                        console.log('Something went wrong...');
+                    }
+                });
+                return false;
+            }
+
+            let next = 1;
+            let nomore = false;
+
+            function load_more_products() {
+                let div = $('#productlist');
+                if (next < n_pages) {
+                    next++;
+                }
+                if (next == n_pages) {
+                    nomore = true
+                }
+                $.ajax({
+                    url: div.attr('href'),
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        n_page: next
+                    },
+                    success: function (data, status, msg) {
+                        $(data).each(function (i, v) {
+                            div.append('<div class="col-lg-3 col-sm-6"><div class="product-item"><div class="pi-pic"><div class="tag-sale">ESTOQUE</div><a href="produtos/' + v.slug + '/' + v.id + '"><img class="product-img" src="' + v.image_url + '"alt="' + v.slug + '"></a><div class="pi-links"><a href="#" class="add-card mr-1"><i class="flaticon-bag"></i><span>ADICIONAR AO CARRINHO</span></a><a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a></div></div><div class="pi-text"><h6 class="promocao">R$' + v.promocao + '</h6><h6 class="preco">R$' + v.preco + '</h6><a href="produtos/' + v.slug + '/' + v.id + '"><p>' + v.titulo + '</p></a></div></div></div>');
+                            if (v.estoque) {
+                                $('.tag-sale:last').show();
+                            } else {
+                                $('.tag-sale:last').hide();
+                            }
+
+                            if (v.promocao) {
+                                $('.preco:last').hide();
+                            } else {
+                                $('.promocao:last').hide();
+                            }
+                        })
+                    },
+                    error: function (data, status, error) {
+                        alert('Erro, animal.');
+                    }
+                });
+            }
+        });
+    </script>
 {% endblock %}

@@ -1,0 +1,56 @@
+<!-- Login modal -->
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!--Content-->
+    <div class="modal-content form-elegant">
+      <!--Header-->
+      <div class="modal-header text-center">
+        <h3 class="modal-title w-100 dark-grey-text font-weight-bold my-3" id="myModalTitle"><strong>Entrar</strong></h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body mx-4">
+        <!--Body-->
+
+        <form class="ajax" id="login-form" action="{% url 'login' %}" method="POST">{% csrf_token %}
+            <div id="login-errors" class="form-errors"></div>
+
+            <div class="md-form mb-3">
+              <input type="text" id="username" name="username" required class="form-control validate" {% if form.username.value %}value="{{ form.username.value }}"{% endif %}>
+              <label data-error="wrong" data-success="right" for="username">E-mail ou nome de usuário</label>
+            </div>
+
+            <div class="md-form pb-3">
+              <input type="password" id="password" name="password" required class="form-control validate" {% if form.password.value %}value="{{ form.password.value }}"{% endif %}>
+              <label data-error="wrong" data-success="right" for="password">Senha</label>
+              <div class="font-small blue-text d-flex justify-content-end"><label data-error="wrong" data-success="right" for="remember_me">Lembrar-se de mim? </label><input class="ml-1" type="checkbox" id="remember_me" name="remember_me" checked></div>
+              <p class="font-small blue-text d-flex justify-content-end">Esqueceu a <a href="#" class="red-text ml-1"> Senha?</a></p>
+            </div>
+
+            <div class="text-center mb-3">
+              <button type="submit" class="btn blue-gradient btn-block btn-rounded z-depth-1a">Entrar</button>
+            </div>
+
+        </form>
+
+        <p class="font-small dark-grey-text text-right d-flex justify-content-center mb-3 pt-2"> ou entra com:</p>
+
+        <div class="row my-3 d-flex justify-content-center">
+          <!--Facebook-->
+          <a type="button" href="{% url 'social:begin' 'facebook' %}" class="btn btn-white btn-rounded mr-md-3 mr-2 z-depth-1a"><i class="fa fa-facebook text-center"></i></a>
+            <!--Google +-->
+          <a type="button" href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-white btn-rounded z-depth-1a"><i class="fa fa-google-plus"></i></a>
+        </div>
+      </div>
+      <!--Footer-->
+      <div class="modal-footer mx-5 pt-3 mb-1">
+        <p class="font-small grey-text d-flex justify-content-end">Ainda não tem uma conta? <a href="{% url 'register' %}" id="register-btn" class="red-text ml-1"> Crie uma agora</a></p>
+      </div>
+    </div>
+    <!--/.Content-->
+  </div>
+</div>
+<!-- Login modal -->
