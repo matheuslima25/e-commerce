@@ -219,7 +219,7 @@ class Produto(BaseModel):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     promocao = models.DecimalField(_('Preço Promocional'), max_digits=6, decimal_places=2, null=True, blank=True)
     desconto = models.DecimalField(_('Desconto'), max_digits=4, decimal_places=2, null=True, blank=True, editable=False)
-    estoque = models.PositiveIntegerField(_('Estoque'), default=1)
+    estoque = models.PositiveIntegerField(_('Estoque'), default=1, null=True)
     cor = models.CharField(_('Cor'), max_length=21, choices=COLOR_CHOICES, default='#ffffff')
     slug = models.CharField(_('Slug'), max_length=20, null=True, blank=True, editable=False)
     peso = models.PositiveIntegerField(_('Peso do produto'), null=True)
